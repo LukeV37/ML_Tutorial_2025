@@ -1,0 +1,6 @@
+numpy
+awkward
+torch
+matplotlib
+notebook
+ipykernel
