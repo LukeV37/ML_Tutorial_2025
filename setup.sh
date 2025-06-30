@@ -1,6 +1,18 @@
 #!/bin/bash
 WORK_DIR=$(pwd)
 
+if [ ! -f ./software/ML_Tutorial_2025/bin/activate ]; then
+    cd software
+    python3 -m venv ML_Tutorial_2025
+    source ./ML_Tutorial_2025/bin/activate
+    pip install --upgrade pip
+    pip install -r pip_requirements.txt
+    ipython3 kernel install --user --name=ML_Tutorial_2025
+    cd $WORK_DIR
+else
+    source ./software/ML_Tutorial_2025/bin/activate
+fi
+
 if [ ! -d ./software/pythia8312 ]; then
     cd software
     curl -O https://www.pythia.org/download/pythia83/pythia8312.tgz
@@ -21,16 +33,4 @@ if [ ! -d ./software/pythia8312 ]; then
         exit 1
     fi
     cd $WORK_DIR
-fi
-
-if [ ! -f ./software/ML_Tutorial_2025/bin/activate ]; then
-    cd software
-    python3 -m venv ML_Tutorial_2025
-    source ./ML_Tutorial_2025/bin/activate
-    pip install --upgrade pip
-    pip install -r pip_requirements.txt
-    ipython3 kernel install --user --name=ML_Tutorial_2025
-    cd $WORK_DIR
-else
-    source ./software/ML_Tutorial_2025/bin/activate
 fi
