@@ -1,3 +1,5 @@
 .ipynb_checkpoints/
 pythia8312.tgz
 pythia8312/
+notebooks/*.pt
+scripts/*.pt
