@@ -36,7 +36,7 @@ pythia_bkg.readString("Beams:idB = 2212")      # Incoming particle 2 is proton
 pythia_bkg.readString("WeakDoubleBoson:ffbar2WW = on")      # Turn on all Diboson process
 pythia_bkg.init()                              # Initialize object with user defined settings
 
-num_events = 1000
+num_events = 5000
 
 # Begin event loop. Generate event. Skip if error.
 sig_events = []
@@ -72,33 +72,41 @@ print("Converting to Awkward Array...")
 bkg_events = ak.Array(bkg_events)
 print("Done Converting to Awkward Array")
 
+plt.figure()
 plt.title("Num Tracks per Event")
 plt.hist(ak.num(sig_events),histtype='step',color='r',range=(0,1000),bins=30,label='sig')
 plt.hist(ak.num(bkg_events),histtype='step',color='b',range=(0,1000),bins=30,label='bkg')
 plt.legend()
+plt.savefig("num_tracks.png")
 plt.show()
 
 # Plot pT for signal and background
+plt.figure()
 plt.title("Particle p$\mathregular{_{T}}$")
 plt.hist(ak.ravel(sig_events[:,:,0]),bins=40,range=(0,250),histtype='step',label='sig',color='r',density=True)
 plt.hist(ak.ravel(bkg_events[:,:,0]),bins=40,range=(0,250),histtype='step',label='bkg',color='b',density=True)
 plt.xlabel('GeV',loc='right')
 plt.yscale('log')
 plt.legend()
+plt.savefig("pt.png")
 plt.show()
 
 # Plot eta for signal and background
+plt.figure()
 plt.title("Particle \u03B7")
 plt.hist(ak.ravel(sig_events[:,:,1]),bins=30,range=(-10,10),histtype='step',label='sig',color='r',density=True)
 plt.hist(ak.ravel(bkg_events[:,:,1]),bins=30,range=(-10,10),histtype='step',label='bkg',color='b',density=True)
 plt.legend()
+plt.savefig("eta.png")
 plt.show()
 
 # Plot phi for signal and background
+plt.figure()
 plt.title("Particle \u03D5")
 plt.hist(ak.ravel(sig_events[:,:,2]),bins=16,range=(-4,4),histtype='step',label='sig',color='r',density=True)
 plt.hist(ak.ravel(bkg_events[:,:,2]),bins=16,range=(-4,4),histtype='step',label='bkg',color='b',density=True)
 plt.legend()
+plt.savefig("phi.png")
 plt.show()
 
 sorted_args = ak.argsort(sig_events[:,:,0], ascending=False)
@@ -139,28 +147,34 @@ sig = combined_labels==1
 bkg = combined_labels==0
 
 # Plot pT for signal and background
+plt.figure()
 plt.title("Particle p$\mathregular{_{T}}$")
 plt.hist(ak.ravel(padded_data[sig][:,0]),bins=40,range=(0,250),histtype='step',label='sig',color='r',density=True)
 plt.hist(ak.ravel(padded_data[bkg][:,0]),bins=40,range=(0,250),histtype='step',label='bkg',color='b',density=True)
 plt.xlabel('GeV',loc='right')
 plt.yscale('log')
 plt.legend()
+plt.savefig("pt_trim_pad.png")
 plt.show()
 
 # Plot eta for signal and background
+plt.figure()
 plt.title("Particle \u03B7")
 plt.hist(ak.ravel(padded_data[sig][:,1]),bins=40,range=(-10,10),histtype='step',label='sig',color='r',density=True)
 plt.hist(ak.ravel(padded_data[bkg][:,1]),bins=40,range=(-10,10),histtype='step',label='bkg',color='b',density=True)
 plt.yscale('log')
 plt.legend()
+plt.savefig("eta_trim_pad.png")
 plt.show()
 
 # Plot phi for signal and background
+plt.figure()
 plt.title("Particle \u03D5")
 plt.hist(ak.ravel(padded_data[sig][:,2]),bins=40,range=(-4,4),histtype='step',label='sig',color='r',density=True)
 plt.hist(ak.ravel(padded_data[bkg][:,2]),bins=40,range=(-4,4),histtype='step',label='bkg',color='b',density=True)
 plt.yscale('log')
 plt.legend()
+plt.savefig("phi_trim_pad.png")
 plt.show()
 
 class ParticleDataset(Dataset):
@@ -180,17 +194,19 @@ train_split = int(0.7*len(padded_data))
 test_split = int(0.75*len(padded_data))
 device="cpu"
 
+print("Converting to Torch Tensors...")
 train_dataset = ParticleDataset(padded_data[0:train_split], combined_labels[0:train_split], device)
 val_dataset = ParticleDataset(padded_data[train_split:test_split], combined_labels[train_split:test_split], device)
 test_dataset = ParticleDataset(padded_data[test_split:], combined_labels[test_split:], device)
 
-torch.save(train_dataset, "../datasets/train_dataset_700K.pt")
-torch.save(val_dataset, "../datasets/val_dataset_50k.pt")
-torch.save(test_dataset, "../datasets/test_dataset_250k.pt")
+torch.save(train_dataset, "../datasets/train_dataset.pt")
+torch.save(val_dataset, "../datasets/val_dataset.pt")
+torch.save(test_dataset, "../datasets/test_dataset.pt")
 
 train_dataloader = DataLoader(train_dataset, batch_size=1024, shuffle=True)
 val_dataloader = DataLoader(val_dataset, batch_size=1024, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=1024, shuffle=True)
+print("Done Converting to Torch Tensors")
 
 for inputs, labels in train_dataloader:
     print("Batch shape:", inputs.shape)
