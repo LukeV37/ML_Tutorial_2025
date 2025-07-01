@@ -133,7 +133,7 @@ def train(model, optimizer, loss_fn, train_dataloader, val_dataloader, lr_step, 
     return history
 
 # Initialize model
-MLP = MultiLayerPerceptron(in_dim=3*padding_particle_cutoff,hidden_dim=164, num_layers=2, out_dim=1)    # Declare model using NeuralNet Class
+MLP = MultiLayerPerceptron(in_dim=3*padding_particle_cutoff,hidden_dim=8, num_layers=2, out_dim=1)    # Declare model using NeuralNet Class
 MLP.to(device)                                       # Put model on device (cpu or gpu)
 print(MLP)                                           # Print layers in model
 
@@ -149,17 +149,19 @@ loss_fn = nn.BCELoss()                                 # BCE = Binary Cross Entr
 history = train(MLP, optimizer, loss_fn, train_dataloader, val_dataloader, lr_step=15, epochs=30)                                             # Train the model!
 
 # Plot Training History
+plt.figure()
 plt.plot(history['train_loss'],label='train')
 plt.plot(history['test_loss'],label='test')
 plt.title("Loss")
 plt.legend()
 plt.yscale('log')
+plt.savefig("MLP_loss.png")
 plt.show()
 
 torch.save(MLP, "MLP.pt")
 
 # Initialize model
-GNN = DeepSets(in_dim=3,hidden_dim=222,out_dim=1)    # Declare model using NeuralNet Class
+GNN = DeepSets(in_dim=3,hidden_dim=16,out_dim=1)    # Declare model using NeuralNet Class
 GNN.to(device)                                       # Put model on device (cpu or gpu)
 print(GNN)                                           # Print layers in model
 
@@ -175,17 +177,19 @@ loss_fn = nn.BCELoss()                                 # BCE = Binary Cross Entr
 history = train(GNN, optimizer, loss_fn, train_dataloader, val_dataloader, lr_step=15, epochs=30)                                             # Train the model!
 
 # Plot Training History
+plt.figure()
 plt.plot(history['train_loss'],label='train')
 plt.plot(history['test_loss'],label='test')
 plt.title("Loss")
 plt.legend()
 plt.yscale('log')
+plt.savefig("GNN_loss.png")
 plt.show()
 
 torch.save(GNN, "GNN.pt")
 
 # Initialize model
-Transformer = TransformerEncoder(in_dim=3,hidden_dim=90,num_encoders=2,out_dim=1)    # Declare model using NeuralNet Class
+Transformer = TransformerEncoder(in_dim=3,hidden_dim=16,num_encoders=2,out_dim=1)    # Declare model using NeuralNet Class
 Transformer.to(device)                                       # Put model on device (cpu or gpu)
 print(Transformer)                                           # Print layers in model
 
@@ -201,11 +205,13 @@ loss_fn = nn.BCELoss()                                 # BCE = Binary Cross Entr
 history = train(Transformer, optimizer, loss_fn, train_dataloader, val_dataloader, lr_step=15, epochs=30)                                             # Train the model!
 
 # Plot Training History
+plt.figure()
 plt.plot(history['train_loss'],label='train')
 plt.plot(history['test_loss'],label='test')
 plt.title("Loss")
 plt.legend()
 plt.yscale('log')
+plt.savefig("Transformer_loss.png")
 plt.show()
 
 torch.save(Transformer, "Transformer.pt")
@@ -304,6 +310,7 @@ MLP_eff_sig, MLP_eff_bkg, MLP_thresh = roc(MLP_pred,MLP_true)
 GNN_eff_sig, GNN_eff_bkg, GNN_thresh = roc(GNN_pred,GNN_true)
 Trans_eff_sig, Trans_eff_bkg, Trans_thresh = roc(Trans_pred,Trans_true)
 
+plt.figure()
 plt.title("ROC Curve")
 plt.plot(MLP_eff_sig,MLP_eff_bkg,color='r',label="MLP")
 plt.plot(GNN_eff_sig,GNN_eff_bkg,color='g',label="GNN")
@@ -312,6 +319,7 @@ plt.plot([1,0],'--',color='k',label="Random Model")
 plt.xlabel("Signal Efficiency")
 plt.ylabel("Background Efficiency")
 plt.legend()
+plt.savefig("Classic_ROC.png")
 plt.show()
 
 # Plot ATLAS Style ROC Curve
@@ -319,6 +327,7 @@ MLP_eff_sig, MLP_eff_bkg, MLP_thresh = ATLAS_roc(MLP_pred,MLP_true)
 GNN_eff_sig, GNN_eff_bkg, GNN_thresh = ATLAS_roc(GNN_pred,GNN_true)
 Trans_eff_sig, Trans_eff_bkg, Trans_thresh = ATLAS_roc(Trans_pred,Trans_true)
 
+plt.figure()
 plt.title("ATLAS ROC Curve")
 plt.plot(MLP_eff_sig,MLP_eff_bkg,color='r',label="MLP")
 plt.plot(GNN_eff_sig,GNN_eff_bkg,color='g',label="GNN")
@@ -329,8 +338,10 @@ plt.yscale('log')
 plt.grid(True,which='both')
 plt.xlim([0, 1])
 plt.legend()
+plt.savefig("ATLAS_ROC.png")
 plt.show()
 
+plt.figure()
 plt.title("ATLAS ROC Curve")
 plt.plot(MLP_eff_sig,MLP_eff_bkg,color='r',label="MLP")
 plt.plot(GNN_eff_sig,GNN_eff_bkg,color='g',label="GNN")
@@ -341,8 +352,10 @@ plt.yscale('log')
 plt.grid(True,which='both')
 plt.xlim([0, 0.2])
 plt.legend()
+plt.savefig("ATLAS_ROC_Low_sigEff.png")
 plt.show()
 
+plt.figure()
 plt.title("ATLAS ROC Curve")
 plt.plot(MLP_eff_sig,MLP_eff_bkg,color='r',label="MLP")
 plt.plot(GNN_eff_sig,GNN_eff_bkg,color='g',label="GNN")
@@ -354,4 +367,5 @@ plt.grid(True,which='both')
 plt.xlim([0.7, 1])
 plt.ylim([0, 18])
 plt.legend()
+plt.savefig("ATLAS_ROC_High_sigEff.png")
 plt.show()
