@@ -1,33 +1,42 @@
 ## Quick Start
+Login to a machine with a gpu:
+```
+ssh <username>@login.af.uchicago.edu
+```
+```
+ssh <username>@lxplus-gpu.cern.ch
+```
 Clone the repo:
 ```
 git clone https://github.com/LukeV37/ML_Tutorial_2025.git
 ```
+Enter the directory `cd ML_Tutorial_2025`.
 
-## How To Run (3) Methods:
-### (1) Locally on Unix Environment
-Install dependencies:
-`sudo apt install git git-lfs build-essential python3-venv curl`
-
-Setup the virtual environment:
+## How To Run:
+### (1) Unix Environment
+First, setup the virtual environment directly from the terminal using:
 ```
 source setup.sh
 ```
 Please be patient while pip installs packages and Pythia8 compiles...
 
+If running on UChicago, request a jupyter lab instance from [UChicago Analysis Facility](https://af.uchicago.edu/jupyterlab/configure).
 
-> [!TIP]
-> Run the jupyter notebooks in the `notebooks` directory. Otherwise, run the code directly from the terminal using python in the `scripts` directory.
+If running on lxplus-gpu, start a jupyter server and use `jupyter notebook list` to open the notebook locally.
+
+Open the jupyter notebook in the `notebooks` directory. Otherwise, run the code directly from the terminal using python in the `scripts` directory.
+
+> [!TIP]  
+> Ssh into the remote server and forward the port of your jupyter notebook server `ssh -L XXXX:localhost:XXXX <username>@lxplus.cern.ch`
+> Then start a jupyter server using `jupyter notebook --no-browser --port=XXXX`
+> Type `jupyter notebook list` and click the link to open the server locally in your browser.
 
 
 ### (2) Cloud Computing on Google Collab
-Open the URL in your web browser and sign into your google account: [https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb](https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb)
+No setup needed! Simply open the URL in your web browser and sign into your google account: [https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb](https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb)
 
 > [!IMPORTANT]  
 > To utilize GPU resources, click `Runtime` > `Change runtime type` > `T4 GPU`. Otherwise training will take longer on CPU.
-
-### (3) Batch Servers
-Run the code remotely on [UChicago Analysis Facility](https://af.uchicago.edu/jupyterlab/configure) or `ssh <username>@lxplus-gpu.cern.ch` 
 
 ## Misc
 This tutorial demonstrates Top Tagging by performing binary classification on ttbar vs diboson W+jets events.
