@@ -21,13 +21,13 @@ Please be patient while pip installs packages and Pythia8 compiles...
 
 
 ### (2) Cloud Computing on Google Collab
-Open the URL in your web browser and sign into your google account: [https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb]([url](https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb))
+Open the URL in your web browser and sign into your google account: [https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb](https://colab.research.google.com/github/LukeV37/ML_Tutorial_2025/blob/main/notebooks/GoogleColab.ipynb)
 
 > [!IMPORTANT]  
 > To utilize GPU resources, click `Runtime` > `Change runtime type` > `T4 GPU`. Otherwise training will take longer on CPU.
 
 ### (3) Batch Servers
-Run the code remotely on [UChicago Analysis Facility]([url](https://af.uchicago.edu/jupyterlab/configure)) or `ssh <username>@lxplus-gpu.cern.ch` 
+Run the code remotely on [UChicago Analysis Facility](https://af.uchicago.edu/jupyterlab/configure) or `ssh <username>@lxplus-gpu.cern.ch` 
 
 ## Misc
 This tutorial demonstrates Top Tagging by performing binary classification on ttbar vs diboson W+jets events.
